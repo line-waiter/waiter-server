@@ -3,8 +3,17 @@ var router = express.Router();
 var queryFunctions = require('../db/queries');
 
 /* GET users listing. */
-router.get('/', function(req, res, next) {
-  res.send('respond with a resource');
+router.get('/jobs', function(req, res, next) {
+  //res.send('respond with a resource');
+  res.render('job')
+});
+
+router.post('/jobs/newjob',function(req,res){
+  console.log(req.body);
+  queryFunctions.postNewJob(req.body)
+  .then((all)=>{
+    res.json(all)
+  });
 });
 
 router.post('/', function(req, res, next) {
