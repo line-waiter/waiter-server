@@ -10,8 +10,10 @@ router.get('/', function(req, res, next) {
 router.post('/', function(req, res, next) {
   if(queryFunctions.comparePassword(req.body)){
     queryFunctions.postNewUser(req.body);
+    res.status(200);
     res.json('done on server!');
   }else{
+    res.status(400);
     console.log("passwords don't match");
     res.json(`passwords don't match`);
   }
