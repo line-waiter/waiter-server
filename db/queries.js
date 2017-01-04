@@ -71,5 +71,8 @@ module.exports = {
         }
       }
     });
+  },
+  getJob: function(){
+    return knex('job');
   }
 };
