@@ -34,7 +34,7 @@ app.use(cookieSession({
 }))
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(cors({
-  origin: 'https://line-waiter.firebaseapp.com/',
+  origin: 'https://line-waiter.firebaseapp.com',
   credentials: true
 }));
 
