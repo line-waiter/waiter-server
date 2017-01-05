@@ -1,3 +1,4 @@
+const SERVER_URL = getUrl();
 var express = require('express');
 var path = require('path');
 var favicon = require('serve-favicon');
@@ -34,7 +35,7 @@ app.use(cookieSession({
 }))
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(cors({
-  origin: 'http://localhost:8080',
+  origin: SERVER_URL,
   credentials: true
 }));
 
@@ -63,5 +64,13 @@ app.use(function(err, req, res, next) {
   res.status(err.status || 500);
   res.render('error');
 });
+
+function getUrl(){
+  if (window.location.host.indexOf('localhost') != -1) {
+    return 'http://localhost:8080';
+  } else {
+    return 'https://line-waiter.firebaseapp.com/';
+  }
+};
 
 module.exports = app;
