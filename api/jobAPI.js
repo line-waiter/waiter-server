@@ -4,12 +4,11 @@ var queries = require('../db/queries');
 
 
 router.get('/', function(req, res, next) {
-  console.log(req.body);
   queries.getJob()
   .then((job)=>{
-    console.log(job);
+  res.json(job);
   });
-  res.render('index', { title: 'Express' });
+
 });
 
 
