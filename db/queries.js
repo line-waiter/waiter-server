@@ -2,6 +2,30 @@ const knex = require('./knex');
 const bcrypt = require('bcryptjs');
 
 module.exports = {
+  
+  postNewJob:function(body){
+    return knex('location')
+    .insert({
+      name:body.name,
+      address:body.address,
+      lat:body.lat,
+      long:body.long
+    },'id')
+    .then((fKey)=>{
+      let fkey_id = fKey[0];
+      return knex('job')
+      .insert({
+        date:body.date,
+        time:body.time,
+        rate:body.rate,
+        status:body.status,
+        start_time:body.start_time,
+        end_time:body.end_time,
+        location_id:fkey_id
+      },'*')
+    });
+  },
+
   postNewUser: function(body){
     return knex("user")
     .insert({
@@ -41,7 +65,7 @@ module.exports = {
         return false;
       } else {
         if (bcrypt.compareSync(body.password, data.password_hash)) {
-          return true;
+          return data.id;
         } else {
           return false;
         }
