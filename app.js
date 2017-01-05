@@ -13,6 +13,8 @@ var users = require('./routes/users');
 var jobAPI = require('./api/jobAPI');
 var userAPI = require('./api/userAPI');
 
+var authMiddleware = require('./auth/middleware');
+
 var app = express();
 
 // view engine setup
@@ -24,13 +26,16 @@ app.set('view engine', 'hbs');
 app.use(logger('dev'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
-app.use(cookieParser('test'));
+app.use(cookieParser(process.env.COOKIE_SECRET));
 app.use(cookieSession({
   name: 'session',
   keys:[process.env.SESSION_KEY_1,process.env.SESSION_KEY_2,process.env.SESSION_KEY_3]
 }))
 app.use(express.static(path.join(__dirname, 'public')));
-app.use(cors());
+app.use(cors({
+  origin: 'http://localhost:8080',
+  credentials: true
+}));
 
 app.use('/', index);
 app.use('/users', users);
