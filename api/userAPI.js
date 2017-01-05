@@ -16,8 +16,11 @@ router.post('/',function(req,res,next){
   });
 });
 
-// router.get('/job/:id',function(req,res,next){
-//
-// });
+router.get('/:id/job',function(req,res,next){
+  queries.getJobsByUser(1)
+  .then((data)=>{
+    res.json(data);
+  });
+});
 
 module.exports = router;

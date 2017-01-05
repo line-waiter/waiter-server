@@ -66,9 +66,11 @@ module.exports = {
         if (bcrypt.compareSync(body.password, data.password_hash)) {
           return data.id;
         } else {
-            return false;
+          return false;
         }
-    },
+      }
+    });
+  },
     getPassword: function(body) {
         return knex('user')
             .innerJoin('login', 'user.id', 'login.user_id')
@@ -98,5 +100,13 @@ module.exports = {
             .select()
             .where('job.id', id)
             .first()
+    },
+    getJobsByUser: function(id){
+      console.log('hit function');
+      return knex('user')
+      .innerJoin('user_job','user.id','user_job.requester_id')
+      .innerJoin('job','user_job.id','job.id')
+      .innerJoin('location','job.location_id','location.id')
+      .where('user.id',id)
     }
 };
