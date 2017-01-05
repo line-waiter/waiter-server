@@ -24,7 +24,7 @@ app.set('view engine', 'hbs');
 app.use(logger('dev'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
-app.use(cookieParser(process.env.COOKIE_SECRET));
+app.use(cookieParser('test'));
 app.use(cookieSession({
   name: 'session',
   keys:[process.env.SESSION_KEY_1,process.env.SESSION_KEY_2,process.env.SESSION_KEY_3]
