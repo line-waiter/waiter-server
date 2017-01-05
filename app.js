@@ -6,6 +6,7 @@ var cookieParser = require('cookie-parser');
 var cookieSession = require('cookie-session');
 var bodyParser = require('body-parser');
 var cors = require('cors');
+require("dotenv").config();
 
 var index = require('./routes/index');
 var users = require('./routes/users');
