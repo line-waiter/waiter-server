@@ -3,12 +3,14 @@ var path = require('path');
 var favicon = require('serve-favicon');
 var logger = require('morgan');
 var cookieParser = require('cookie-parser');
+var cookieSession = require('cookie-session');
 var bodyParser = require('body-parser');
 var cors = require('cors');
 
 var index = require('./routes/index');
 var users = require('./routes/users');
-var api = require('./api/jobAPI');
+var jobAPI = require('./api/jobAPI');
+var userAPI = require('./api/userAPI');
 
 var app = express();
 
@@ -21,13 +23,18 @@ app.set('view engine', 'hbs');
 app.use(logger('dev'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
-app.use(cookieParser());
+app.use(cookieParser(process.env.COOKIE_SECRET));
+app.use(cookieSession({
+  name: 'session',
+  keys:[process.env.SESSION_KEY_1,process.env.SESSION_KEY_2,process.env.SESSION_KEY_3]
+}))
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(cors());
 
 app.use('/', index);
 app.use('/users', users);
-app.use('/api', api);
+app.use('/jobAPI', jobAPI);
+app.use('/userAPI', userAPI);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

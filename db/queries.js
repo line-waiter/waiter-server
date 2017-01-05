@@ -41,7 +41,7 @@ module.exports = {
         return false;
       } else {
         if (bcrypt.compareSync(body.password, data.password_hash)) {
-          return true;
+          return data.id;
         } else {
           return false;
         }
