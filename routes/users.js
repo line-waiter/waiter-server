@@ -1,12 +1,22 @@
 var express = require('express');
 var router = express.Router();
 var queryFunctions = require('../db/queries');
+var knex = require('knex');
 
 /* GET users listing. */
 router.get('/jobs', function(req, res, next) {
   //res.send('respond with a resource');
   res.render('job')
 });
+
+// router.get('/jobs',function(req,res){
+//  knex('location').innerJoin('job','location.id','job.location_id')
+//  .select()
+//  .first()
+//  .then((result)=>{
+//    res.json(result)
+//  })
+// })
 
 router.post('/jobs/newjob',function(req,res){
   console.log(req.body);
