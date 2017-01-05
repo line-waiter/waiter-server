@@ -16,4 +16,8 @@ router.post('/',function(req,res,next){
   });
 });
 
+// router.get('/job/:id',function(req,res,next){
+//
+// });
+
 module.exports = router;
