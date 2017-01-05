@@ -12,6 +12,7 @@ var index = require('./routes/index');
 var users = require('./routes/users');
 var jobAPI = require('./api/jobAPI');
 var userAPI = require('./api/userAPI');
+var authAPI = require('./api/authAPI');
 
 var authMiddleware = require('./auth/middleware');
 
@@ -40,7 +41,10 @@ app.use(cors({
 app.use('/', index);
 app.use('/users', users);
 app.use('/jobAPI', jobAPI);
+app.use('/authAPI', authAPI);
 app.use('/userAPI', userAPI);
+// authMiddleware.ensureLoggedIn,
+
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

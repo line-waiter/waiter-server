@@ -3,20 +3,6 @@ var router = express.Router();
 var queryFunctions = require('../db/queries');
 var knex = require('../db/knex')
 
-/*This is the sign up route*/
-
-router.post('/', function(req, res, next) {
-  if(queryFunctions.comparePassword(req.body)){
-    queryFunctions.postNewUser(req.body);
-    res.status(200);
-    res.json('done on server!');
-  }else{
-    res.status(400);
-    console.log("passwords don't match");
-    res.json(`passwords don't match`);
-  }
-});
-
 /*This route posts new jobs to the data base*/
 
 router.post('/jobs',function(req,res){
