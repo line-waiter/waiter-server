@@ -8,7 +8,8 @@ router.post('/',function(req,res,next){
   .then((data)=>{
     if (data) {
       res.cookie('userID',data,{signed:true});
-      res.json('test')
+      // console.log(res);
+      res.json('test');
     }else {
       res.json('error');
     }
