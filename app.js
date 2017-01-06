@@ -34,7 +34,7 @@ app.use(cookieParser(process.env.COOKIE_SECRET));
 // }))
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(cors({
-  origin: 'https://line-waiter.firebaseapp.com',
+  origin: 'http://localhost:8080',
   credentials: true
 }));
 app.use(function(req,res,next){
@@ -43,8 +43,8 @@ app.use(function(req,res,next){
 });
 
 app.use('/', index);
-app.use('/users', users);
-app.use('/jobAPI', jobAPI);
+app.use('/users', authMiddleware.ensureLoggedIn,users);
+app.use('/jobAPI', authMiddleware.ensureLoggedIn,jobAPI);
 app.use('/authAPI', authAPI);
 app.use('/userAPI', authMiddleware.ensureLoggedIn,userAPI);
 

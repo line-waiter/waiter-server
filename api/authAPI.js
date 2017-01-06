@@ -10,7 +10,8 @@ router.post('/',function(req,res,next){
       // console.log(res);
       res.json('test');
     }else {
-      res.json('error');
+      // res.status(404);
+      res.json('Incorrect email or password');
     }
   });
 });

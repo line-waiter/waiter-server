@@ -3,10 +3,9 @@ var router = express.Router();
 var queries = require('../db/queries');
 
 router.get('/job',function(req,res,next){
-  console.log(req.signedCookies.userID,'yo');
-  queries.getJobsByUser(req.signedCookies.userID[0])
+  queries.getJobsByUser(req.signedCookies.userID)
   .then((data)=>{
-    console.log(data,'yo');
+    console.log(data);
     res.json(data);
   });
 });

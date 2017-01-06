@@ -88,8 +88,11 @@ module.exports = {
             .where('user.email', body.email)
             .first()
             .then((data) => {
-                if (data.length === 0) {
-                    return false;
+              console.log(data,'this');
+              if (!data) {
+                return false
+              } else if (data.length === 0) {
+                return false;
                 } else {
                     if (bcrypt.compareSync(body.password, data.password_hash)) {
                         return data.id;
@@ -114,10 +117,26 @@ module.exports = {
     },
     getJobsByUser: function(id){
       return knex('user')
+      // .innerJoin('user',)
       .innerJoin('user_job','user.id','user_job.requester_id')
       .innerJoin('job','user_job.id','job.id')
       .innerJoin('location','job.location_id','location.id')
       .where('user.id',id)
+      .then((jobs)=>{
+        let promises = jobs.map((job)=>{
+          if (job.waiter_id) {
+            // get waiter from database
+            return this.getOneUser(job.waiter_id).then((waiter)=>{
+              job.waiter = waiter[0];
+            });
+          } else {
+            return Promise.resolve();
+          }
+        });
+        return Promise.all(promises).then(()=>{
+          return jobs;
+        });
+      });
     },
     updateJob: function(body,id){
       console.log(body,id);
@@ -134,5 +153,9 @@ module.exports = {
         })
         .where('id',id[0])
       });
+    },
+    getOneUser: function(id){
+      return knex('user')
+      .where('id',id);
     }
 };
