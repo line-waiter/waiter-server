@@ -22,6 +22,7 @@ exports.up = function(knex, Promise) {
       table.string('address').notNullable();
       table.string('lat');
       table.string('long');
+      table.string('phone_number').defaultTo('none');
     }),
     knex.schema.createTable('job',function(table){
       table.increments();
