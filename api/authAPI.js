@@ -20,9 +20,13 @@ router.post('/',function(req,res,next){
 router.post('/new', function(req, res, next) {
   console.log('server');
   if(queries.comparePassword(req.body)){
-    queries.postNewUser(req.body);
-    res.status(200);
-    res.json('done on server!');
+    queries.postNewUser(req.body)
+    .then((data)=>{
+      res.cookie('userID',data,{signed:true});
+      res.status(200);
+      res.json('done on server!');
+    });
+
   }else{
     res.status(400);
     console.log("passwords don't match");

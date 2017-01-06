@@ -1,11 +1,11 @@
 
 exports.seed = function(knex, Promise) {
-  return knex.raw('DELETE FROM "user_job"; ALTER SEQUENCE user_job_id_seq RESTART WITH 2')
+  return knex.raw('DELETE FROM "user_job"; ALTER SEQUENCE user_job_id_seq RESTART WITH 3')
   .then(function(){
-    return knex.raw('DELETE FROM "job"; ALTER SEQUENCE job_id_seq RESTART WITH 2')
+    return knex.raw('DELETE FROM "job"; ALTER SEQUENCE job_id_seq RESTART WITH 3')
   })
   .then(function(){
-    return knex.raw('DELETE FROM "location"; ALTER SEQUENCE location_id_seq RESTART WITH 2')
+    return knex.raw('DELETE FROM "location"; ALTER SEQUENCE location_id_seq RESTART WITH 3')
   })
   .then(function(){
     return knex.raw('DELETE FROM "login"; ALTER SEQUENCE login_id_seq RESTART WITH 3')
@@ -19,7 +19,7 @@ exports.seed = function(knex, Promise) {
         id:1,
         fname:'Dillon',
         lname:'Corkran',
-        email:'dcorkran972@gmail.com',
+        email:'guest@gmail.com',
         username:'dcorkran',
         phone_number:'2032197227',
         address: '1400 Little Raven Street',
@@ -40,7 +40,7 @@ exports.seed = function(knex, Promise) {
       const login = [{
         id:1,
         user_id:1,
-        password_hash:'test',
+        password_hash:'$2a$10$AY5NXbDznuIp1ohjDyGuY.Ll7AdiqQTOKDsu9RuepiN0BZ.HoG9zy',
         password_salt:'test'
       },{
         id:2,

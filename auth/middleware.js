@@ -1,6 +1,6 @@
 function ensureLoggedIn(req,res,next){
   console.log(req.signedCookies);
-  if (req.signedCookies.user_id) {
+  if (req.signedCookies.userID) {
     next();
   }else {
     res.status(401);

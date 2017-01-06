@@ -29,6 +29,9 @@ router.post('/jobs/newjob',function(req,res){
 /*This route posts new jobs to the data base*/
 
 router.post('/jobs',function(req,res){
+  let reqData = req.body;
+  reqData.userID = req.signedCookies.userID[0];
+  console.log(reqData);
   queryFunctions.postNewJob(req.body)
   .then((all)=>{
     res.json(all)

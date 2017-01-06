@@ -39,7 +39,9 @@ module.exports = {
                 var newID = newIDArray[0];
                 var salt = bcrypt.genSaltSync(10);
                 var hash = bcrypt.hashSync(body.password, salt);
+                console.log(hash);
                 return knex('login')
+                .returning('id')
                     .insert({
                         user_id: newID,
                         password_hash: hash,
