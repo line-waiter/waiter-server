@@ -34,11 +34,11 @@ app.use(cookieParser(process.env.COOKIE_SECRET));
 // }))
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(cors({
-  origin: 'https://line-waiter.firebaseapp.com',
+  origin: 'http://localhost:8080',
   credentials: true
 }));
 app.use(function(req,res,next){
-  console.log(req.signedCookies);
+  console.log(req.signedCookies.userID);
   next();
 });
 
@@ -46,8 +46,8 @@ app.use('/', index);
 app.use('/users', users);
 app.use('/jobAPI', jobAPI);
 app.use('/authAPI', authAPI);
-app.use('/userAPI', userAPI);
-// authMiddleware.ensureLoggedIn,
+app.use('/userAPI', authMiddleware.ensureLoggedIn,userAPI);
+
 
 
 // catch 404 and forward to error handler
@@ -64,7 +64,7 @@ app.use(function(err, req, res, next) {
   res.locals.error = req.app.get('env') === 'development' ? err : {};
 
   // render the error page
-  res.status(err.status || 500);
+  res.status(err.status || res.statusCode || 500);
   res.render('error');
 });
 

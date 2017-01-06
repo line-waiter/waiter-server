@@ -81,7 +81,7 @@ module.exports = {
                     return false;
                 } else {
                     if (bcrypt.compareSync(body.password, data.password_hash)) {
-                        return true;
+                        return data.id;
                     } else {
                         return false;
                     }
@@ -102,7 +102,6 @@ module.exports = {
             .first()
     },
     getJobsByUser: function(id){
-      console.log('hit function');
       return knex('user')
       .innerJoin('user_job','user.id','user_job.requester_id')
       .innerJoin('job','user_job.id','job.id')

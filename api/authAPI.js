@@ -3,7 +3,6 @@ var router = express.Router();
 var queries = require('../db/queries');
 
 router.post('/',function(req,res,next){
-  console.log(req.body);
   queries.getPassword(req.body)
   .then((data)=>{
     if (data) {
