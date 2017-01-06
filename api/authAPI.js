@@ -7,7 +7,7 @@ router.post('/',function(req,res,next){
   queries.getPassword(req.body)
   .then((data)=>{
     if (data) {
-      res.cookie('userID',data,{signed:true,path:'/'});
+      res.cookie('userID',data,{signed:true});
       // console.log(res);
       res.json('test');
     }else {

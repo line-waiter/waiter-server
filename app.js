@@ -28,10 +28,10 @@ app.use(logger('dev'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser(process.env.COOKIE_SECRET));
-app.use(cookieSession({
-  name: 'session',
-  keys:[process.env.SESSION_KEY_1,process.env.SESSION_KEY_2,process.env.SESSION_KEY_3]
-}))
+// app.use(cookieSession({
+//   name: 'session',
+//   keys:[process.env.SESSION_KEY_1,process.env.SESSION_KEY_2,process.env.SESSION_KEY_3]
+// }))
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(cors({
   origin: 'https://line-waiter.firebaseapp.com',
