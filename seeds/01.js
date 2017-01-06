@@ -56,7 +56,15 @@ exports.seed = function(knex, Promise) {
         name:'Galvanize',
         address:'1644 Platte St',
         lat:39.7576,
-        long:105.0070
+        long:105.0070,
+        phone_number:1231231234
+      },{
+        id:2,
+        name:'McDonalds',
+        address:'6590 Wadsworth Blvd',
+        lat:39.8576,
+        long:109.2070,
+        phone_number:4314314321
       }];
       return knex('location').insert(location);
     })
@@ -70,6 +78,15 @@ exports.seed = function(knex, Promise) {
         start_time:'13:35:25',
         end_time:'14:01:20',
         location_id:1
+      },{
+        id:2,
+        date:'2016-12-29',
+        time:'13:45:00',
+        status:'accepted',
+        rate:12.00,
+        start_time:'13:56:25',
+        end_time:'14:29:20',
+        location_id:2
       }];
       return knex('job').insert(job);
     })
@@ -79,6 +96,11 @@ exports.seed = function(knex, Promise) {
         requester_id:1,
         waiter_id:2,
         job_id:1
+      },{
+        id:2,
+        requester_id:1,
+        waiter_id:2,
+        job_id:2
       }];
       return knex('user_job').insert(user_job);
     });
