@@ -34,7 +34,7 @@ app.use(cookieParser(process.env.COOKIE_SECRET));
 // }))
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(cors({
-  origin: 'https://line-waiter-db.herokuapp.com',
+  origin: 'https://line-waiter.firebaseapp.com',
   credentials: true
 }));
 app.use(function(req,res,next){
