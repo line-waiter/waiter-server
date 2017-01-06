@@ -37,6 +37,10 @@ app.use(cors({
   origin: 'https://line-waiter.firebaseapp.com',
   credentials: true
 }));
+app.use(function(req,res,next){
+  console.log(req.signedCookies);
+  next();
+});
 
 app.use('/', index);
 app.use('/users', users);
