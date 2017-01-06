@@ -48,6 +48,14 @@ router.get('/jobs',function(req,res){
   })
 })
 
+router.put('/jobs',function(req,res){
+  console.log(req.body);
+    queryFunctions.updateJob(req.body,req.signedCookies)
+    .then((jobs)=>{
+    res.json(jobs)
+  })
+})
+
 /*This route gets one job*/
 
 router.get('/jobs/:id',function(req,res){

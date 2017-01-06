@@ -13,6 +13,7 @@ module.exports = {
             .then((fKey) => {
                 let fkey_id = fKey[0];
                 return knex('job')
+                    .returning('id')
                     .insert({
                         date: body.date,
                         time: body.time,
@@ -22,6 +23,14 @@ module.exports = {
                         end_time: body.end_time,
                         location_id: fkey_id
                     }, '*')
+              .then((jobID)=>{
+                console.log(jobID,typeof jobID.id,typeof body.userID);
+                return knex('user_job')
+                .insert({
+                  requester_id:body.userID,
+                  job_id:jobID[0].id
+                });
+              });
             });
     },
 
@@ -109,5 +118,21 @@ module.exports = {
       .innerJoin('job','user_job.id','job.id')
       .innerJoin('location','job.location_id','location.id')
       .where('user.id',id)
+    },
+    updateJob: function(body,id){
+      console.log(body,id);
+      return knex('user_job')
+      .returning('id')
+      .update({
+        waiter_id:id.userID
+      })
+      .where('id',Number(body.id))
+      .then((id)=>{
+        return knex('job')
+        .update({
+          status:'accepted'
+        })
+        .where('id',id[0])
+      });
     }
 };
