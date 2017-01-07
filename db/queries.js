@@ -115,13 +115,36 @@ module.exports = {
             .where('job.id', id)
             .first()
     },
-    getJobsByUser: function(id){
+    getRequestsByUser: function(id){
       return knex('user')
       // .innerJoin('user',)
       .innerJoin('user_job','user.id','user_job.requester_id')
       .innerJoin('job','user_job.id','job.id')
       .innerJoin('location','job.location_id','location.id')
-      .where('user.id',id)
+      .where('user.id',id[0])
+      .then((jobs)=>{
+        let promises = jobs.map((job)=>{
+          if (job.waiter_id) {
+            // get waiter from database
+            return this.getOneUser(job.waiter_id).then((waiter)=>{
+              job.waiter = waiter[0];
+            });
+          } else {
+            return Promise.resolve();
+          }
+        });
+        return Promise.all(promises).then(()=>{
+          return jobs;
+        });
+      });
+    },
+    getJobsByUser: function(id){
+      return knex('user')
+      // .innerJoin('user',)
+      .innerJoin('user_job','user.id','user_job.waiter_id')
+      .innerJoin('job','user_job.id','job.id')
+      .innerJoin('location','job.location_id','location.id')
+      .where('user.id',id[0])
       .then((jobs)=>{
         let promises = jobs.map((job)=>{
           if (job.waiter_id) {
@@ -143,7 +166,7 @@ module.exports = {
       return knex('user_job')
       .returning('id')
       .update({
-        waiter_id:id.userID
+        waiter_id:id
       })
       .where('id',Number(body.id))
       .then((id)=>{

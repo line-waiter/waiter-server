@@ -50,7 +50,7 @@ router.get('/jobs',function(req,res){
 
 router.put('/jobs',function(req,res){
   console.log(req.body);
-    queryFunctions.updateJob(req.body,req.signedCookies)
+    queryFunctions.updateJob(req.body,req.signedCookies.userID[0])
     .then((jobs)=>{
     res.json(jobs)
   })
