@@ -13,6 +13,7 @@ var users = require('./routes/users');
 var jobAPI = require('./api/jobAPI');
 var userAPI = require('./api/userAPI');
 var authAPI = require('./api/authAPI');
+var waiterAPI = require('./api/waiterAPI')
 
 var authMiddleware = require('./auth/middleware');
 
@@ -47,7 +48,7 @@ app.use('/users', authMiddleware.ensureLoggedIn,users);
 app.use('/jobAPI', authMiddleware.ensureLoggedIn,jobAPI);
 app.use('/authAPI', authAPI);
 app.use('/userAPI', authMiddleware.ensureLoggedIn,userAPI);
-
+app.use('/waiterAPI',authMiddleware.ensureLoggedIn,waiterAPI )
 
 
 // catch 404 and forward to error handler

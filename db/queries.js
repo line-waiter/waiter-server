@@ -180,5 +180,13 @@ module.exports = {
     getOneUser: function(id){
       return knex('user')
       .where('id',id);
+    },
+    updateTime: function(body){
+      return knex('job')
+      .update({
+        status: body.status,
+        start_time: body.starting_time
+      })
+      .where('id', body.id)
     }
 };
