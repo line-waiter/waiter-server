@@ -6,7 +6,8 @@ router.post('/',function(req,res,next){
   queries.getPassword(req.body)
   .then((data)=>{
     if (data) {
-      res.cookie('userID',data,{signed:true});
+      res.cookie('userID',data.id,{signed:true});
+      res.cookie('userName',data.fname);
       // console.log(res);
       res.json('test');
     }else {
@@ -33,6 +34,12 @@ router.post('/new', function(req, res, next) {
     console.log("passwords don't match");
     res.json(`passwords don't match`);
   }
+});
+
+router.get('/logout',function(req,res,next){
+  res.clearCookie('userID');
+  res.clearCookie('userName');
+  res.json('Cookies Cleared');
 });
 
 module.exports = router;

@@ -95,7 +95,7 @@ module.exports = {
                 return false;
                 } else {
                     if (bcrypt.compareSync(body.password, data.password_hash)) {
-                        return data.id;
+                        return data;
                     } else {
                         return false;
                     }
@@ -103,10 +103,12 @@ module.exports = {
             });
     },
 
-    getAllJobs: function() {
+    getAllJobs: function(id) {
         return knex('location')
             .innerJoin('job', 'location.id', 'job.location_id')
-            .select()
+            .innerJoin('user_job','job.id','user_job.job_id')
+            .where('job.status','Requested')
+            .andWhereNot('user_job.requester_id',id)
     },
     getOneJob: function(id) {
         return knex('location')
@@ -180,5 +182,12 @@ module.exports = {
     getOneUser: function(id){
       return knex('user')
       .where('id',id);
+    },
+    deleteJob: function(id){
+      return knex('job')
+      .innerJoin('user_job','job.id','user_job.id')
+      .innerJoin('location','job.location_id','location.id')
+      .where('job.id',id)
+      .del();
     }
 };

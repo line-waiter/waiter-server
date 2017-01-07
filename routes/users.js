@@ -42,7 +42,7 @@ router.post('/jobs',function(req,res){
 /*This route gets all the jobs from the location and the jobs tables*/
 
 router.get('/jobs',function(req,res){
-    queryFunctions.getAllJobs()
+    queryFunctions.getAllJobs(req.signedCookies.userID[0])
     .then((jobs)=>{
     res.json(jobs)
   })

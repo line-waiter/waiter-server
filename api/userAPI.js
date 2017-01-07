@@ -18,6 +18,13 @@ router.get('/job',function(req,res,next){
   });
 });
 
+router.delete('/job',function(req,res,next){
+  queries.deleteJob(req.body.id)
+  .then(()=>{
+    res.json('Job Deleted');
+  });
+});
+
 
 
 module.exports = router;
