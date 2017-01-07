@@ -189,5 +189,13 @@ module.exports = {
       .innerJoin('location','job.location_id','location.id')
       .where('job.id',id)
       .del();
+    },
+    updateTime: function(body){
+      return knex('job')
+      .update({
+        status: body.status,
+        start_time: body.starting_time
+      })
+      .where('id', body.id);
     }
 };
