@@ -10,7 +10,6 @@ module.exports = {
                 address: body.address,
                 lat: body.lat,
                 long: body.long,
-                phone_number: body.phone_number
             }, 'id')
             .then((fKey) => {
                 let fkey_id = fKey[0];
