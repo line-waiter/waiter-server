@@ -3,12 +3,14 @@ const bcrypt = require('bcryptjs');
 
 module.exports = {
     postNewJob: function(body) {
+        console.log(body);
         return knex('location')
             .insert({
                 name: body.name,
                 address: body.address,
                 lat: body.lat,
-                long: body.long
+                long: body.long,
+                phone_number: body.phone_number
             }, 'id')
             .then((fKey) => {
                 let fkey_id = fKey[0];
@@ -23,14 +25,14 @@ module.exports = {
                         end_time: body.end_time,
                         location_id: fkey_id
                     }, '*')
-              .then((jobID)=>{
-                console.log(jobID,typeof jobID.id,typeof body.userID);
-                return knex('user_job')
-                .insert({
-                  requester_id:body.userID,
-                  job_id:jobID[0].id
-                });
-              });
+                    .then((jobID) => {
+                        console.log(jobID, typeof jobID.id, typeof body.userID);
+                        return knex('user_job')
+                            .insert({
+                                requester_id: body.userID,
+                                job_id: jobID[0].id
+                            });
+                    });
             });
     },
 
@@ -50,7 +52,7 @@ module.exports = {
                 var hash = bcrypt.hashSync(body.password, salt);
                 console.log(hash);
                 return knex('login')
-                .returning('id')
+                    .returning('id')
                     .insert({
                         user_id: newID,
                         password_hash: hash,
@@ -61,38 +63,38 @@ module.exports = {
     comparePassword: function(body) {
         if (body.password === body.password2) {
             return true;
-          }else{
-            return false;
-          }
-  },
-  getPassword: function(body){
-    return knex('user')
-    .innerJoin('login', 'user.id', 'login.user_id')
-    .where('user.email',body.email)
-    .first()
-    .then((data)=>{
-      if (data.length === 0) {
-        return false;
-      } else {
-        if (bcrypt.compareSync(body.password, data.password_hash)) {
-          return data.id;
         } else {
-          return false;
+            return false;
         }
-      }
-    });
-  },
+    },
     getPassword: function(body) {
         return knex('user')
             .innerJoin('login', 'user.id', 'login.user_id')
             .where('user.email', body.email)
             .first()
             .then((data) => {
-              console.log(data,'this');
-              if (!data) {
-                return false
-              } else if (data.length === 0) {
-                return false;
+                if (data.length === 0) {
+                    return false;
+                } else {
+                    if (bcrypt.compareSync(body.password, data.password_hash)) {
+                        return data.id;
+                    } else {
+                        return false;
+                    }
+                }
+            });
+    },
+    getPassword: function(body) {
+        return knex('user')
+            .innerJoin('login', 'user.id', 'login.user_id')
+            .where('user.email', body.email)
+            .first()
+            .then((data) => {
+                console.log(data, 'this');
+                if (!data) {
+                    return false
+                } else if (data.length === 0) {
+                    return false;
                 } else {
                     if (bcrypt.compareSync(body.password, data.password_hash)) {
                         return data;
@@ -106,9 +108,9 @@ module.exports = {
     getAllJobs: function(id) {
         return knex('location')
             .innerJoin('job', 'location.id', 'job.location_id')
-            .innerJoin('user_job','job.id','user_job.job_id')
-            .where('job.status','Requested')
-            .andWhereNot('user_job.requester_id',id)
+            .innerJoin('user_job', 'job.id', 'user_job.job_id')
+            .where('job.status', 'Requested')
+            .andWhereNot('user_job.requester_id', id)
     },
     getOneJob: function(id) {
         return knex('location')
@@ -117,93 +119,93 @@ module.exports = {
             .where('job.id', id)
             .first()
     },
-    getRequestsByUser: function(id){
-      return knex('user')
-      // .innerJoin('user',)
-      .innerJoin('user_job','user.id','user_job.requester_id')
-      .innerJoin('job','user_job.id','job.id')
-      .innerJoin('location','job.location_id','location.id')
-      .where('user.id',id[0])
-      .then((jobs)=>{
-        let promises = jobs.map((job)=>{
-          if (job.waiter_id) {
-            // get waiter from database
-            return this.getOneUser(job.waiter_id).then((waiter)=>{
-              job.waiter = waiter[0];
+    getRequestsByUser: function(id) {
+        return knex('user')
+            // .innerJoin('user',)
+            .innerJoin('user_job', 'user.id', 'user_job.requester_id')
+            .innerJoin('job', 'user_job.id', 'job.id')
+            .innerJoin('location', 'job.location_id', 'location.id')
+            .where('user.id', id[0])
+            .then((jobs) => {
+                let promises = jobs.map((job) => {
+                    if (job.waiter_id) {
+                        // get waiter from database
+                        return this.getOneUser(job.waiter_id).then((waiter) => {
+                            job.waiter = waiter[0];
+                        });
+                    } else {
+                        return Promise.resolve();
+                    }
+                });
+                return Promise.all(promises).then(() => {
+                    return jobs;
+                });
             });
-          } else {
-            return Promise.resolve();
-          }
-        });
-        return Promise.all(promises).then(()=>{
-          return jobs;
-        });
-      });
     },
-    getJobsByUser: function(id){
-      return knex('user')
-      // .innerJoin('user',)
-      .innerJoin('user_job','user.id','user_job.waiter_id')
-      .innerJoin('job','user_job.id','job.id')
-      .innerJoin('location','job.location_id','location.id')
-      .where('user.id',id[0])
-      .then((jobs)=>{
-        let promises = jobs.map((job)=>{
-          if (job.waiter_id) {
-            // get waiter from database
-            return this.getOneUser(job.waiter_id).then((waiter)=>{
-              job.waiter = waiter[0];
+    getJobsByUser: function(id) {
+        return knex('user')
+            // .innerJoin('user',)
+            .innerJoin('user_job', 'user.id', 'user_job.waiter_id')
+            .innerJoin('job', 'user_job.id', 'job.id')
+            .innerJoin('location', 'job.location_id', 'location.id')
+            .where('user.id', id[0])
+            .then((jobs) => {
+                let promises = jobs.map((job) => {
+                    if (job.waiter_id) {
+                        // get waiter from database
+                        return this.getOneUser(job.waiter_id).then((waiter) => {
+                            job.waiter = waiter[0];
+                        });
+                    } else {
+                        return Promise.resolve();
+                    }
+                });
+                return Promise.all(promises).then(() => {
+                    return jobs;
+                });
             });
-          } else {
-            return Promise.resolve();
-          }
-        });
-        return Promise.all(promises).then(()=>{
-          return jobs;
-        });
-      });
     },
-    updateJob: function(body,id){
-      console.log(body,id);
-      return knex('user_job')
-      .returning('id')
-      .update({
-        waiter_id:id
-      })
-      .where('id',Number(body.id))
-      .then((id)=>{
+    updateJob: function(body, id) {
+        console.log(body, id);
+        return knex('user_job')
+            .returning('id')
+            .update({
+                waiter_id: id
+            })
+            .where('id', Number(body.id))
+            .then((id) => {
+                return knex('job')
+                    .update({
+                        status: 'accepted'
+                    })
+                    .where('id', id[0])
+            });
+    },
+    getOneUser: function(id) {
+        return knex('user')
+            .where('id', id);
+    },
+    deleteJob: function(id) {
         return knex('job')
-        .update({
-          status:'accepted'
-        })
-        .where('id',id[0])
-      });
+            .innerJoin('user_job', 'job.id', 'user_job.id')
+            .innerJoin('location', 'job.location_id', 'location.id')
+            .where('job.id', id)
+            .del();
     },
-    getOneUser: function(id){
-      return knex('user')
-      .where('id',id);
+    updateStartTime: function(body) {
+        return knex('job')
+            .update({
+                status: body.status,
+                start_time: body.starting_time
+            })
+            .where('id', body.id);
     },
-    deleteJob: function(id){
-      return knex('job')
-      .innerJoin('user_job','job.id','user_job.id')
-      .innerJoin('location','job.location_id','location.id')
-      .where('job.id',id)
-      .del();
-    },
-    updateStartTime: function(body){
-      return knex('job')
-      .update({
-        status: body.status,
-        start_time: body.starting_time
-      })
-      .where('id', body.id);
-    },
-    updateEndTime: function(body){
-      return knex('job')
-      .update({
-        status: body.status,
-        end_time: body.starting_time
-      })
-      .where('id', body.id);
+    updateEndTime: function(body) {
+        return knex('job')
+            .update({
+                status: body.status,
+                end_time: body.starting_time
+            })
+            .where('id', body.id);
     }
 };
