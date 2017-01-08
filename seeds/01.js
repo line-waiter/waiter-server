@@ -1,11 +1,11 @@
 
 exports.seed = function(knex, Promise) {
-  return knex.raw('DELETE FROM "user_job"; ALTER SEQUENCE user_job_id_seq RESTART WITH 3')
+  return knex.raw('DELETE FROM "user_job"; ALTER SEQUENCE user_job_id_seq RESTART WITH 4')
   .then(function(){
-    return knex.raw('DELETE FROM "job"; ALTER SEQUENCE job_id_seq RESTART WITH 3')
+    return knex.raw('DELETE FROM "job"; ALTER SEQUENCE job_id_seq RESTART WITH 4')
   })
   .then(function(){
-    return knex.raw('DELETE FROM "location"; ALTER SEQUENCE location_id_seq RESTART WITH 3')
+    return knex.raw('DELETE FROM "location"; ALTER SEQUENCE location_id_seq RESTART WITH 4')
   })
   .then(function(){
     return knex.raw('DELETE FROM "login"; ALTER SEQUENCE login_id_seq RESTART WITH 3')
