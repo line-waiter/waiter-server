@@ -65,6 +65,13 @@ exports.seed = function(knex, Promise) {
         lat:39.8576,
         long:109.2070,
         phone_number:4314314321
+      },{
+        id:3,
+        name:'Test Place',
+        address:'690 Madssworth Blvd',
+        lat:39.8576,
+        long:109.2070,
+        phone_number:4324314321
       }];
       return knex('location').insert(location);
     })
@@ -73,20 +80,29 @@ exports.seed = function(knex, Promise) {
         id:1,
         date:'2016-12-28',
         time:'13:30:00',
-        status:'accepted',
+        status:'Accepted',
         rate:12.00,
-        start_time:'13:35:25',
-        end_time:'14:01:20',
+        start_time:'00:00:00',
+        end_time:'00:00:00',
         location_id:1
       },{
         id:2,
         date:'2016-12-29',
         time:'13:45:00',
-        status:'accepted',
+        status:'Accepted',
         rate:12.00,
-        start_time:'13:56:25',
-        end_time:'14:29:20',
+        start_time:'00:00:00',
+        end_time:'00:00:00',
         location_id:2
+      },{
+        id:3,
+        date:'2016-12-29',
+        time:'13:45:00',
+        status:'Requested',
+        rate:12.00,
+        start_time:'00:00:00',
+        end_time:'00:00:00',
+        location_id:3
       }];
       return knex('job').insert(job);
     })
@@ -98,9 +114,14 @@ exports.seed = function(knex, Promise) {
         job_id:1
       },{
         id:2,
-        requester_id:1,
-        waiter_id:2,
+        requester_id:2,
+        waiter_id:1,
         job_id:2
+      },{
+        id:3,
+        requester_id:2,
+        waiter_id:null,
+        job_id:3
       }];
       return knex('user_job').insert(user_job);
     });

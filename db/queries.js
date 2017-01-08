@@ -190,11 +190,19 @@ module.exports = {
       .where('job.id',id)
       .del();
     },
-    updateTime: function(body){
+    updateStartTime: function(body){
       return knex('job')
       .update({
         status: body.status,
         start_time: body.starting_time
+      })
+      .where('id', body.id);
+    },
+    updateEndTime: function(body){
+      return knex('job')
+      .update({
+        status: body.status,
+        end_time: body.starting_time
       })
       .where('id', body.id);
     }
