@@ -3,7 +3,6 @@ const bcrypt = require('bcryptjs');
 
 module.exports = {
     postNewJob: function(body) {
-        console.log(body);
         return knex('location')
             .insert({
                 name: body.name,
