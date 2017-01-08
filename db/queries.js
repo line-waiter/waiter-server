@@ -3,12 +3,14 @@ const bcrypt = require('bcryptjs');
 
 module.exports = {
     postNewJob: function(body) {
+        console.log(body);
         return knex('location')
             .insert({
                 name: body.name,
                 address: body.address,
                 lat: body.lat,
                 long: body.long,
+                phone_number: body.phone_number
             }, 'id')
             .then((fKey) => {
                 let fkey_id = fKey[0];
@@ -174,7 +176,7 @@ module.exports = {
             .then((id) => {
                 return knex('job')
                     .update({
-                        status: 'accepted'
+                        status: 'Accepted'
                     })
                     .where('id', id[0])
             });
