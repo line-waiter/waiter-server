@@ -7,6 +7,7 @@ var cookieSession = require('cookie-session');
 var bodyParser = require('body-parser');
 var cors = require('cors');
 var dotenv = require("dotenv").config();
+var nodemailer = require('nodemailer');
 
 var index = require('./routes/index');
 var users = require('./routes/users');
@@ -14,6 +15,7 @@ var jobAPI = require('./api/jobAPI');
 var userAPI = require('./api/userAPI');
 var authAPI = require('./api/authAPI');
 var waiterAPI = require('./api/waiterAPI');
+var emailAPI = require('./api/emailAPI');
 
 var authMiddleware = require('./auth/middleware');
 
@@ -48,7 +50,8 @@ app.use('/users', authMiddleware.ensureLoggedIn,users);
 app.use('/jobAPI', authMiddleware.ensureLoggedIn,jobAPI);
 app.use('/authAPI', authAPI);
 app.use('/userAPI', authMiddleware.ensureLoggedIn,userAPI);
-app.use('/waiterAPI',authMiddleware.ensureLoggedIn,waiterAPI )
+app.use('/waiterAPI',authMiddleware.ensureLoggedIn,waiterAPI );
+app.use('/emailAPI', emailAPI);
 
 
 // catch 404 and forward to error handler
