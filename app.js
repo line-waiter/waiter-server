@@ -13,7 +13,7 @@ var users = require('./routes/users');
 var jobAPI = require('./api/jobAPI');
 var userAPI = require('./api/userAPI');
 var authAPI = require('./api/authAPI');
-var waiterAPI = require('./api/waiterAPI')
+var waiterAPI = require('./api/waiterAPI');
 
 var authMiddleware = require('./auth/middleware');
 
@@ -35,7 +35,7 @@ app.use(cookieParser(process.env.COOKIE_SECRET));
 // }))
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(cors({
-  origin: 'https://line-waiter.firebaseapp.com',
+  origin: 'http://localhost:8080',
   credentials: true
 }));
 app.use(function(req,res,next){
