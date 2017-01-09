@@ -166,11 +166,6 @@ module.exports = {
             });
     },
     updateJob: function(body, id) {
-<<<<<<< HEAD
-        console.log('hitting2');
-        console.log(body, id, 'id should be here');
-=======
->>>>>>> cae6776b67824a2fff52e973f6eb532166a49f71
         return knex('user_job')
             .returning('id')
             .update({
@@ -212,10 +207,10 @@ module.exports = {
             })
             .where('id', body.id);
     },
-    getBothUsers:function(data){
-      return knex('user')
-      .innerJoin('user_job','user.id','user_job.requester_id')
-      .innerJoin('job','user_job.job_id','job.id')
-      .where('user_job.job_id',data.id);
+    getBothUsers: function(data) {
+        return knex('user')
+            .innerJoin('user_job', 'user.id', 'user_job.requester_id')
+            .innerJoin('job', 'user_job.job_id', 'job.id')
+            .where('user_job.job_id', data.id);
     }
 };
