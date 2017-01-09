@@ -49,7 +49,7 @@ router.get('/jobs',function(req,res){
 })
 
 router.put('/jobs',function(req,res){
-  console.log(req.body);
+  console.log(req.body,'hitting1');
     queryFunctions.updateJob(req.body,req.signedCookies.userID[0])
     .then((jobs)=>{
     res.json(jobs)
