@@ -153,7 +153,7 @@ module.exports = {
                 let promises = jobs.map((job) => {
                     if (job.waiter_id) {
                         // get waiter from database
-                        return this.getOneUser(job.waiter_id).then((waiter) => {
+                        return this.getOneUser(job.requester_id).then((waiter) => {
                             job.waiter = waiter[0];
                         });
                     } else {
@@ -166,8 +166,6 @@ module.exports = {
             });
     },
     updateJob: function(body, id) {
-      console.log('hitting2');
-        console.log(body, id,'id should be here');
         return knex('user_job')
             .returning('id')
             .update({
@@ -208,5 +206,11 @@ module.exports = {
                 end_time: body.starting_time
             })
             .where('id', body.id);
+    },
+    getBothUsers:function(data){
+      return knex('user')
+      .innerJoin('user_job','user.id','user_job.requester_id')
+      .innerJoin('job','user_job.job_id','job.id')
+      .where('user_job.job_id',data.id);
     }
 };
