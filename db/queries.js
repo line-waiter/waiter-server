@@ -166,8 +166,8 @@ module.exports = {
             });
     },
     updateJob: function(body, id) {
-      console.log('hitting2');
-        console.log(body, id,'id should be here');
+        console.log('hitting2');
+        console.log(body, id, 'id should be here');
         return knex('user_job')
             .returning('id')
             .update({
