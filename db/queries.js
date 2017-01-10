@@ -3,7 +3,6 @@ const bcrypt = require('bcryptjs');
 
 module.exports = {
     postNewJob: function(body) {
-        console.log(body);
         return knex('location')
             .insert({
                 name: body.name,
@@ -26,7 +25,6 @@ module.exports = {
                         location_id: fkey_id
                     }, '*')
                     .then((jobID) => {
-                        console.log(jobID, typeof jobID.id, typeof body.userID);
                         return knex('user_job')
                             .insert({
                                 requester_id: body.userID,
@@ -50,7 +48,6 @@ module.exports = {
                 var newID = newIDArray[0];
                 var salt = bcrypt.genSaltSync(10);
                 var hash = bcrypt.hashSync(body.password, salt);
-                console.log(hash);
                 return knex('login')
                     .returning('id')
                     .insert({
@@ -90,7 +87,6 @@ module.exports = {
             .where('user.email', body.email)
             .first()
             .then((data) => {
-                console.log(data, 'this');
                 if (!data) {
                     return false
                 } else if (data.length === 0) {
